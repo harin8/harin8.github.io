@@ -23,9 +23,9 @@ export function TimelineNode({
       data-index={index}
       className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 will-change-transform"
     >
-      <div className="max-w-2xl px-6">
+      <div className="max-w-2xl px-5 sm:px-6 w-full">
         {/* Tag + index header */}
-        <div className="flex items-center gap-4 mb-6 hud-label">
+        <div className="flex items-center gap-4 mb-4 sm:mb-6 hud-label">
           <span className={TAG_COLORS[event.tag]}>[{event.tag}]</span>
           <span className="text-haze">
             event {String(index + 1).padStart(2, "0")} /{" "}
@@ -39,7 +39,7 @@ export function TimelineNode({
         </h2>
 
         {/* Body */}
-        <p className="font-mono text-base sm:text-lg leading-relaxed text-ink/75 max-w-xl">
+        <p className="font-mono text-sm sm:text-base md:text-lg leading-relaxed text-ink/75 max-w-xl">
           {event.body}
         </p>
 

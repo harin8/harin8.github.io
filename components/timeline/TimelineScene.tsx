@@ -15,6 +15,7 @@ export function TimelineScene() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [activeYear, setActiveYear] = useState(TIMELINE[0].year);
   const [progress, setProgress] = useState(0);
+  const [fallback, setFallback] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -22,18 +23,28 @@ export function TimelineScene() {
     if (!section || !stage) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      // Reveal everything statically for reduced-motion users
+    const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+    const isSmall = window.matchMedia("(max-width: 767px)").matches;
+    // GSAP pin/scrub fights mobile touch scroll (rubber-band, momentum,
+    // address-bar resize). Reuse the reduced-motion stack on phones.
+    // Tablets (>=768px) keep the cinematic experience.
+    const useFallback = reduce || (isCoarse && isSmall);
+
+    if (useFallback) {
+      setFallback(true);
       const nodes = stage.querySelectorAll<HTMLElement>("[data-timeline-node]");
       nodes.forEach((node) => {
         node.style.opacity = "1";
         node.style.position = "relative";
         node.style.transform = "none";
+        node.style.filter = "none";
       });
       stage.style.height = "auto";
       stage.style.display = "flex";
       stage.style.flexDirection = "column";
-      stage.style.gap = "8rem";
+      stage.style.gap = "6rem";
+      section.style.height = "auto";
+      section.style.overflow = "visible";
       return;
     }
 
@@ -124,60 +135,71 @@ export function TimelineScene() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[100dvh] overflow-hidden"
-      style={{ perspective: "1200px" }}
+      className={`relative w-full overflow-hidden ${fallback ? "" : "h-[100dvh]"}`}
+      style={{ perspective: fallback ? undefined : "1200px" }}
     >
       {/* Perspective grid floor */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, color-mix(in srgb, var(--color-accent) 30%, transparent) 1px, transparent 1px),
-              linear-gradient(to bottom, color-mix(in srgb, var(--color-accent) 30%, transparent) 1px, transparent 1px)
-            `,
-            backgroundSize: "60px 60px",
-            transform: "perspective(800px) rotateX(60deg) translateY(40%) scale(2)",
-            transformOrigin: "center bottom",
-            maskImage:
-              "linear-gradient(to bottom, transparent 0%, black 40%, black 80%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, black 40%, black 80%, transparent 100%)",
-          }}
-        />
-      </div>
-
-      {/* HUD: year counter */}
-      <div className="absolute top-24 left-6 sm:left-10 z-20 hud-label flex flex-col gap-1">
-        <span className="text-haze">› current</span>
-        <span className="font-mono text-3xl text-accent tracking-tight">
-          {activeYear}
-        </span>
-      </div>
-
-      {/* HUD: progress */}
-      <div className="absolute bottom-10 left-6 right-6 sm:left-10 sm:right-10 z-20">
-        <div className="flex items-center justify-between hud-label mb-2">
-          <span>› timeline</span>
-          <span className="text-accent">
-            {Math.round(progress * 100).toString().padStart(3, "0")}%
-          </span>
-        </div>
-        <div className="h-px bg-haze/30 w-full">
+      {!fallback && (
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
           <div
-            className="h-full bg-accent transition-[width]"
-            style={{ width: `${progress * 100}%` }}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, color-mix(in srgb, var(--color-accent) 30%, transparent) 1px, transparent 1px),
+                linear-gradient(to bottom, color-mix(in srgb, var(--color-accent) 30%, transparent) 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+              transform:
+                "perspective(800px) rotateX(60deg) translateY(40%) scale(2)",
+              transformOrigin: "center bottom",
+              maskImage:
+                "linear-gradient(to bottom, transparent 0%, black 40%, black 80%, transparent 100%)",
+              WebkitMaskImage:
+                "linear-gradient(to bottom, transparent 0%, black 40%, black 80%, transparent 100%)",
+            }}
           />
         </div>
-        <div className="flex items-center justify-between mt-2 hud-label opacity-60">
-          {TIMELINE.map((e, i) => (
-            <span key={i}>{e.year}</span>
-          ))}
+      )}
+
+      {/* HUD: year counter (pin-only) */}
+      {!fallback && (
+        <div className="absolute top-24 left-6 sm:left-10 z-20 hud-label flex flex-col gap-1 safe-left">
+          <span className="text-haze">› current</span>
+          <span className="font-mono text-3xl text-accent tracking-tight">
+            {activeYear}
+          </span>
         </div>
-      </div>
+      )}
+
+      {/* HUD: progress (pin-only) */}
+      {!fallback && (
+        <div className="absolute bottom-10 left-6 right-6 sm:left-10 sm:right-10 z-20 safe-bottom">
+          <div className="flex items-center justify-between hud-label mb-2">
+            <span>› timeline</span>
+            <span className="text-accent">
+              {Math.round(progress * 100).toString().padStart(3, "0")}%
+            </span>
+          </div>
+          <div className="h-px bg-haze/30 w-full">
+            <div
+              className="h-full bg-accent transition-[width]"
+              style={{ width: `${progress * 100}%` }}
+            />
+          </div>
+          <div className="flex items-center justify-between mt-2 hud-label opacity-60">
+            {TIMELINE.map((e, i) => (
+              <span key={i}>{e.year}</span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Stage with overlapping nodes */}
-      <div ref={stageRef} className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
+      <div
+        ref={stageRef}
+        className="relative h-full w-full"
+        style={{ transformStyle: fallback ? undefined : "preserve-3d" }}
+      >
         {TIMELINE.map((event, i) => (
           <TimelineNode key={i} event={event} index={i} />
         ))}
