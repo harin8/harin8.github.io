@@ -24,6 +24,7 @@ Personal site (`harin.dev`) — Next.js 16 App Router, React 19, TypeScript stri
 - Build: `npm run build`
 - Lint: `npm run lint` (Next built-in)
 - Typecheck: `npm run typecheck`
+- E2E: `npm run test:e2e` (Playwright auto-starts the dev server)
 
 Env required: `GEMINI_API_KEY`. Optional: `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` (rate-limit silently skipped without them).
 
@@ -42,7 +43,7 @@ Env required: `GEMINI_API_KEY`. Optional: `UPSTASH_REDIS_REST_URL`, `UPSTASH_RED
 - CSP in `vercel.json` is strict. Adding external scripts/images/fonts requires editing `connect-src`/`script-src`/`img-src` deliberately.
 
 ## Testing
-**No tests, no CI in this repo yet.** Don't claim coverage in PR descriptions. If adding tests, Playwright is the intended choice (matches the TS rule pack).
+Playwright smoke tests live in `e2e/`. Config: `playwright.config.ts` (Chromium only, dev-server in local mode, build+start in CI). CI runs typecheck + lint + e2e on every push and PR to `main` via `.github/workflows/e2e.yml`. Coverage is not measured yet — don't claim a coverage number in PRs.
 
 ## Conventions
 - Branches: `claude/<short-desc>-<id>` for AI-generated work, target `main`.
@@ -62,6 +63,8 @@ Classified via `/everything-claude-code:agent-sort`. Skills resolve through the 
 **DAILY** (first-class for this repo — prefer these when relevant):
 - `frontend-patterns`, `nextjs-turbopack`, `api-design`, `coding-standards`
 - `seo`, `accessibility`, `security-review`, `code-review`, `browser-qa`
+- `tdd-workflow`, `e2e-testing` — Playwright is wired up
+- `github-ops`, `deployment-patterns` — CI lives at `.github/workflows/e2e.yml`
 - `git-workflow`, `prp-commit`, `prp-pr`
 - `ui-ux-pro-max:ui-ux-pro-max`, `update-config`
 
@@ -73,7 +76,6 @@ Classified via `/everything-claude-code:agent-sort`. Skills resolve through the 
 - Any Web3/crypto skill (`evm-token-decimals`, `nodejs-keccak256`, `defi-amm-security`, etc.)
 
 **Defer until prerequisites land:**
-- Testing skills (`tdd-workflow`, `e2e-testing`, `test-coverage`) — promote to DAILY when Playwright is added
-- `github-ops`, `deployment-patterns` — promote when CI lands in `.github/`
+- `test-coverage` — promote when a coverage tool (e.g. v8 / istanbul via Playwright) is wired into CI
 
 Everything else stays as LIBRARY: reachable via global plugin search, not preloaded.
