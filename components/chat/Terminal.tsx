@@ -151,7 +151,7 @@ export function Terminal() {
       {/* Transcript */}
       <div
         ref={scrollRef}
-        className="px-5 py-6 h-[55dvh] sm:h-[60dvh] overflow-y-auto font-mono text-sm leading-relaxed"
+        className="px-4 sm:px-5 py-5 sm:py-6 h-[60dvh] overflow-y-auto overscroll-contain font-mono text-sm leading-relaxed"
       >
         {messages.length === 0 && (
           <div className="text-haze">
@@ -205,13 +205,13 @@ export function Terminal() {
         {showSuggestions && messages.length === 0 && (
           <div className="mt-6">
             <p className="hud-label text-haze mb-3">› suggested queries</p>
-            <ul className="flex flex-col gap-1">
+            <ul className="flex flex-col gap-2">
               {SUGGESTIONS.map((s) => (
                 <li key={s}>
                   <button
                     type="button"
                     onClick={() => send(s)}
-                    className="text-left text-haze hover:text-accent transition-colors"
+                    className="tap-target w-full text-left text-haze hover:text-accent transition-colors py-2 px-3 -mx-3 border border-transparent hover:border-accent/30 rounded-sm"
                   >
                     <span className="text-accent">›</span> {s}
                   </button>
@@ -235,6 +235,16 @@ export function Terminal() {
           disabled={streaming}
           className="flex-1 bg-transparent resize-none outline-none font-mono text-sm text-ink placeholder:text-haze/60 disabled:opacity-50"
         />
+        {!streaming && (
+          <button
+            type="button"
+            onClick={() => send(input)}
+            aria-label="Send"
+            className="sm:hidden tap-target inline-flex items-center justify-center text-accent text-lg shrink-0"
+          >
+            ↵
+          </button>
+        )}
         <span className="hud-label hidden sm:block pt-1">
           {streaming ? (
             <span className="text-accent">streaming</span>
@@ -242,6 +252,9 @@ export function Terminal() {
             "enter ↵"
           )}
         </span>
+        {streaming && (
+          <span className="sm:hidden hud-label text-accent pt-1">streaming</span>
+        )}
       </div>
     </div>
   );

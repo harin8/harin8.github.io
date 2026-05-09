@@ -93,6 +93,13 @@ export function CommandPalette() {
     }
   }, [open]);
 
+  // Cross-component opener (mobile nav button, home bottom prompt)
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("operator:palette-open", onOpen);
+    return () => window.removeEventListener("operator:palette-open", onOpen);
+  }, []);
+
   const close = useCallback(() => {
     setOpen(false);
     setInput("");
@@ -242,7 +249,7 @@ export function CommandPalette() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-[12vh] px-4 bg-bg/80 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-start justify-center pt-[8vh] sm:pt-[12vh] px-3 sm:px-4 bg-bg/80 backdrop-blur-sm safe-top"
       onClick={close}
     >
       <div
@@ -252,14 +259,20 @@ export function CommandPalette() {
         {/* Title bar */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-haze/20 bg-bg/50 hud-label">
           <span>› recon console</span>
-          <span className="text-haze">
-            esc to close
-          </span>
+          <button
+            type="button"
+            onClick={close}
+            aria-label="Close command palette"
+            className="tap-target inline-flex items-center text-haze hover:text-accent transition-colors px-2 -mr-2"
+          >
+            <span className="hidden sm:inline">esc to close</span>
+            <span className="sm:hidden text-base leading-none">×</span>
+          </button>
         </div>
 
         {/* History */}
         {history.length > 0 && (
-          <div className="px-4 py-3 max-h-[40dvh] overflow-y-auto font-mono text-sm border-b border-haze/15">
+          <div className="px-3 sm:px-4 py-3 max-h-[50dvh] sm:max-h-[40dvh] overflow-y-auto font-mono text-sm border-b border-haze/15">
             {history.map((r) => (
               <div key={r.id} className="mb-3">
                 <div>
@@ -278,14 +291,17 @@ export function CommandPalette() {
         )}
 
         {/* Input */}
-        <form onSubmit={onSubmit} className="flex items-center gap-2 px-4 py-3">
+        <form
+          onSubmit={onSubmit}
+          className="flex items-center gap-2 px-3 sm:px-4 py-3 min-h-12"
+        >
           <span className="text-accent font-mono">›</span>
           <input
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={mode === "running"}
-            placeholder='try: whoami · ask "why product?" · go timeline'
+            placeholder="try: whoami · help · go chat"
             className="flex-1 bg-transparent outline-none font-mono text-sm text-ink placeholder:text-haze/60 disabled:opacity-50"
           />
           {mode === "running" && (

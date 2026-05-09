@@ -51,12 +51,12 @@ export function BootSequence({ onDone }: Props) {
 
   return (
     <div
-      className={`fixed inset-0 z-40 flex items-end justify-start p-8 bg-bg pointer-events-none transition-opacity duration-700 ${
+      className={`fixed inset-0 z-40 flex items-end justify-start p-5 sm:p-8 safe-bottom safe-left bg-bg pointer-events-none transition-opacity duration-700 ${
         done ? "opacity-0" : "opacity-100"
       }`}
       aria-hidden={done}
     >
-      <pre className="font-mono text-xs sm:text-sm leading-relaxed text-accent/90 whitespace-pre-wrap">
+      <pre className="font-mono text-xs sm:text-sm leading-relaxed text-accent/90 whitespace-pre-wrap break-words max-w-full">
         {LINES.slice(0, visibleCount).map((line, i) => (
           <div key={i}>
             <span className="text-haze">[{(i + 1).toString().padStart(2, "0")}]</span>{" "}

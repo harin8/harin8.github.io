@@ -181,3 +181,32 @@ body {
   background: var(--color-haze);
   border-radius: 4px;
 }
+
+/* Prevent iOS Safari auto-zoom on focused inputs (anything < 16px triggers it) */
+@media (max-width: 640px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* 44px minimum tap target */
+.tap-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Safe-area-inset utilities (Tailwind v4 ships none) */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-left {
+  padding-left: env(safe-area-inset-left);
+}
+.safe-right {
+  padding-right: env(safe-area-inset-right);
+}

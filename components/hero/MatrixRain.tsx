@@ -28,6 +28,11 @@ export function MatrixRain({
     if (!ctx) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isSmall = window.matchMedia("(max-width: 640px)").matches;
+    // Larger glyph -> fewer columns -> fewer iterations per frame.
+    const effectiveFontSize = isSmall ? Math.max(fontSize, 22) : fontSize;
+    // Cap to 30fps on phones to halve CPU/GPU load.
+    const minInterval = isSmall ? 1000 / 30 : 0;
 
     let drops: Drop[] = [];
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -42,9 +47,9 @@ export function MatrixRain({
       canvas.height = Math.floor(cssHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      columnCount = Math.ceil(cssWidth / fontSize);
+      columnCount = Math.ceil(cssWidth / effectiveFontSize);
       drops = Array.from({ length: columnCount }, (_, i) => ({
-        x: i * fontSize,
+        x: i * effectiveFontSize,
         y: Math.random() * cssHeight,
         speed: 1 + Math.random() * 2.5,
         trail: 12 + Math.random() * 18,
@@ -55,12 +60,19 @@ export function MatrixRain({
     window.addEventListener("resize", resize);
 
     let rafId = 0;
-    const draw = () => {
+    let lastDraw = 0;
+    const draw = (t: number = 0) => {
+      if (minInterval && t - lastDraw < minInterval) {
+        if (!reduce) rafId = requestAnimationFrame(draw);
+        return;
+      }
+      lastDraw = t;
+
       // Fade existing frame instead of clearing — produces the trailing tail
       ctx.fillStyle = "rgba(7, 9, 12, 0.08)";
       ctx.fillRect(0, 0, cssWidth, cssHeight);
 
-      ctx.font = `${fontSize}px var(--font-jetbrains, monospace)`;
+      ctx.font = `${effectiveFontSize}px var(--font-jetbrains, monospace)`;
       ctx.textBaseline = "top";
 
       for (const d of drops) {
@@ -72,17 +84,26 @@ export function MatrixRain({
 
         // Trailing glow
         ctx.fillStyle = `rgba(0, 255, 156, ${opacity * 0.4})`;
-        ctx.fillText(ch, d.x, d.y - fontSize);
+        ctx.fillText(ch, d.x, d.y - effectiveFontSize);
 
         d.y += d.speed;
-        if (d.y > cssHeight + d.trail * fontSize) {
-          d.y = -fontSize * 2;
+        if (d.y > cssHeight + d.trail * effectiveFontSize) {
+          d.y = -effectiveFontSize * 2;
           d.speed = 1 + Math.random() * 2.5;
         }
       }
 
       if (!reduce) rafId = requestAnimationFrame(draw);
     };
+
+    const onVis = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+      } else if (!reduce) {
+        rafId = requestAnimationFrame(draw);
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
 
     if (reduce) {
       // Single static frame for reduced-motion users
@@ -95,6 +116,7 @@ export function MatrixRain({
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", onVis);
     };
   }, [opacity, fontSize]);
 
