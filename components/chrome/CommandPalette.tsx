@@ -42,6 +42,7 @@ const STATIC_COMMANDS: Record<string, () => string[]> = {
     "  whoami            — operator identity",
     "  skills --json     — capability matrix",
     "  cv --download     — fetch resume",
+    "  book              — open scheduler / book a sync",
     "  contact --pgp     — public key fingerprint",
     "  go <home|timeline|chat>  — navigate",
     "  year <YYYY>       — jump to timeline event",
@@ -216,6 +217,14 @@ export function CommandPalette() {
       // clear
       if (cmd === "clear") {
         setHistory([]);
+        return;
+      }
+
+      // book — open scheduler modal
+      if (cmd === "book") {
+        window.dispatchEvent(new CustomEvent("book:open"));
+        pushResult(cmd, ["opening scheduler..."]);
+        setTimeout(close, 200);
         return;
       }
 

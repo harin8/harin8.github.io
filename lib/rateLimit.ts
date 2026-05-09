@@ -1,37 +1,51 @@
-import { Redis } from "@upstash/redis";
 import { Ratelimit } from "@upstash/ratelimit";
+import { getRedis } from "./redis";
 
-let limiter: Ratelimit | null = null;
+export { getClientId } from "./redis";
 
-/**
- * Returns a configured rate-limiter, or null if Upstash env vars are missing.
- * Allowing null means the chat endpoint still works in local dev without Redis.
- */
+let chatLimiter: Ratelimit | null = null;
+let connectLimiter: Ratelimit | null = null;
+
 export function getChatRateLimit(): Ratelimit | null {
-  if (limiter) return limiter;
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
+  if (chatLimiter) return chatLimiter;
+  const redis = getRedis();
+  if (!redis) return null;
 
   try {
-    limiter = new Ratelimit({
-      redis: new Redis({ url, token }),
+    chatLimiter = new Ratelimit({
+      redis,
       limiter: Ratelimit.slidingWindow(10, "10 m"),
       analytics: true,
       prefix: "chat",
     });
-    return limiter;
+    return chatLimiter;
   } catch (err) {
     console.warn(
-      "[rateLimit] Upstash misconfigured, skipping rate-limit:",
+      "[rateLimit] chat limiter init failed:",
       err instanceof Error ? err.message : err,
     );
     return null;
   }
 }
 
-export function getClientId(headers: Headers): string {
-  const forwarded = headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return headers.get("x-real-ip") ?? "anon";
+export function getConnectRateLimit(): Ratelimit | null {
+  if (connectLimiter) return connectLimiter;
+  const redis = getRedis();
+  if (!redis) return null;
+
+  try {
+    connectLimiter = new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(5, "10 m"),
+      analytics: true,
+      prefix: "connect",
+    });
+    return connectLimiter;
+  } catch (err) {
+    console.warn(
+      "[rateLimit] connect limiter init failed:",
+      err instanceof Error ? err.message : err,
+    );
+    return null;
+  }
 }

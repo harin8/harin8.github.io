@@ -4,6 +4,7 @@ import "./globals.css";
 import { SmoothScroll } from "@/components/fx/SmoothScroll";
 import { Nav } from "@/components/chrome/Nav";
 import { CommandPalette } from "@/components/chrome/CommandPalette";
+import { BookingModal } from "@/components/chrome/BookingModal";
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default function RootLayout({
         <div className="crt-scanlines" aria-hidden />
         <div className="crt-vignette" aria-hidden />
         <CommandPalette />
+        <BookingModal />
       </body>
     </html>
   );
