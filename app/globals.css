@@ -5,11 +5,12 @@
   --color-bg-elev: #0e1218;
   --color-ink: #c7d1da;
   --color-accent: #00ff9c;
+  --color-accent-dim: #4d8a78;
   --color-alert: #ff2e63;
-  --color-haze: #6b7785;
+  --color-haze: #8a96a4;
 
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --font-hud: var(--font-vt323), ui-monospace, monospace;
 }
 

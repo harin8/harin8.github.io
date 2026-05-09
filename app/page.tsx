@@ -53,7 +53,7 @@ export default function Home() {
                   stagger={80}
                 />
               </h1>
-              <p className="font-mono text-sm sm:text-base md:text-lg max-w-2xl text-ink/80 mt-2">
+              <p className="font-mono text-sm sm:text-base md:text-lg max-w-xl text-ink mt-2 text-balance">
                 <DecryptText
                   text="cybersecurity engineer. software builder. learning the craft of product."
                   delay={bootDone ? 900 : 99999}
