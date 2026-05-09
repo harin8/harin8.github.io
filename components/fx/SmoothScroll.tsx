@@ -6,7 +6,10 @@ import Lenis from "lenis";
 export function SmoothScroll() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+    // Lenis fights iOS rubber-band/momentum; native touch scroll is already
+    // smooth on phones, so skip Lenis on coarse-pointer devices.
+    if (reduce || isCoarse) return;
 
     const lenis = new Lenis({
       lerp: 0.1,
