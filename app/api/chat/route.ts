@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { getAnthropic, CHAT_MODEL } from "@/lib/anthropic";
+import { getGemini, CHAT_MODEL } from "@/lib/gemini";
 import { buildSystemPrompt } from "@/lib/prompt";
 import { getChatRateLimit, getClientId } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 30;
 
 const RequestSchema = z.object({
   messages: z
@@ -62,49 +63,50 @@ export async function POST(req: Request) {
   }
   const { messages } = parsed.data;
 
-  // Stream from Claude (gracefully degrade if key is missing)
-  if (!process.env.ANTHROPIC_API_KEY) {
+  // Stream from Gemini (gracefully degrade if key is missing)
+  if (!process.env.GEMINI_API_KEY) {
     return new Response(
       JSON.stringify({
         error: "not_configured",
         message:
-          "operator offline. ANTHROPIC_API_KEY is not set on the server.",
+          "operator offline. GEMINI_API_KEY is not set on the server.",
       }),
       { status: 503, headers: { "Content-Type": "application/json" } },
     );
   }
-  const client = getAnthropic();
+  const client = getGemini();
   const encoder = new TextEncoder();
+
+  // Gemini uses role "model" for assistant turns.
+  const contents = messages.map((m) => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.content }],
+  }));
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
-        const response = client.messages.stream({
+        const response = await client.models.generateContentStream({
           model: CHAT_MODEL,
-          max_tokens: 1024,
-          system: [
-            {
-              type: "text",
-              text: buildSystemPrompt(),
-              cache_control: { type: "ephemeral" },
-            },
-          ],
-          messages,
+          contents,
+          config: {
+            systemInstruction: buildSystemPrompt(),
+            maxOutputTokens: 1024,
+          },
         });
 
-        for await (const event of response) {
-          if (
-            event.type === "content_block_delta" &&
-            event.delta.type === "text_delta"
-          ) {
-            controller.enqueue(encoder.encode(event.delta.text));
+        for await (const chunk of response) {
+          const text = chunk.text;
+          if (text) {
+            controller.enqueue(encoder.encode(text));
           }
         }
         controller.close();
       } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "operator unreachable";
-        controller.enqueue(encoder.encode(`\n\n[error] ${message}`));
+        // Log the real error server-side; send a generic message to the client
+        // so we don't leak provider details (invalid key, quota, etc.).
+        console.error("[chat] stream error:", err);
+        controller.enqueue(encoder.encode("\n\n[error] operator unreachable"));
         controller.close();
       }
     },

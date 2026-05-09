@@ -13,13 +13,21 @@ export function getChatRateLimit(): Ratelimit | null {
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) return null;
 
-  limiter = new Ratelimit({
-    redis: new Redis({ url, token }),
-    limiter: Ratelimit.slidingWindow(10, "10 m"),
-    analytics: true,
-    prefix: "chat",
-  });
-  return limiter;
+  try {
+    limiter = new Ratelimit({
+      redis: new Redis({ url, token }),
+      limiter: Ratelimit.slidingWindow(10, "10 m"),
+      analytics: true,
+      prefix: "chat",
+    });
+    return limiter;
+  } catch (err) {
+    console.warn(
+      "[rateLimit] Upstash misconfigured, skipping rate-limit:",
+      err instanceof Error ? err.message : err,
+    );
+    return null;
+  }
 }
 
 export function getClientId(headers: Headers): string {

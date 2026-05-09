@@ -144,7 +144,7 @@ export function Terminal() {
         </div>
         <div className="flex items-center gap-3 hud-label">
           <span className="text-haze">session #a3f9</span>
-          <span className="text-accent">claude · sonnet 4.6</span>
+          <span className="text-accent">gemini · 2.5 flash</span>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 # harin // operator console
 
 Personal site. Cyber-noir aesthetic. Streaming chatbot grounded in a bio file.
-Built with Next.js 16, React 19, Tailwind v4, GSAP, and the Anthropic SDK.
+Built with Next.js 16, React 19, Tailwind v4, GSAP, and the Google Gemini SDK.
 
 ## Pages
 
@@ -21,7 +21,7 @@ Built with Next.js 16, React 19, Tailwind v4, GSAP, and the Anthropic SDK.
 | Smooth scroll | Lenis |
 | Scroll choreography | GSAP + ScrollTrigger |
 | Micro-interactions | Framer Motion |
-| LLM | `@anthropic-ai/sdk` (streaming) |
+| LLM | `@google/genai` — Gemini 2.5 Flash (streaming) |
 | Rate limit | Upstash Redis + Ratelimit |
 | Validation | Zod |
 
@@ -30,7 +30,8 @@ Built with Next.js 16, React 19, Tailwind v4, GSAP, and the Anthropic SDK.
 ```bash
 npm install
 cp .env.local.example .env.local
-# fill in ANTHROPIC_API_KEY and (optional) UPSTASH_* values
+# fill in GEMINI_API_KEY (free at https://aistudio.google.com/apikey)
+# and (optional) UPSTASH_* values
 npm run dev
 ```
 
@@ -43,7 +44,7 @@ silently skipped if the env vars are missing.
 
 1. Import this repo into Vercel. Framework auto-detects as Next.js.
 2. Add environment variables in **Project Settings → Environment Variables**:
-   - `ANTHROPIC_API_KEY` (required)
+   - `GEMINI_API_KEY` (required)
    - `UPSTASH_REDIS_REST_URL` (recommended for production)
    - `UPSTASH_REDIS_REST_TOKEN` (recommended for production)
 3. Push to the configured branch. Vercel deploys a preview; promote to production
@@ -54,8 +55,8 @@ silently skipped if the env vars are missing.
 ## Editing content
 
 - **`content/bio.md`** — the full grounding for the chatbot. The whole file is
-  injected as the system prompt on every request, server-side, with prompt
-  caching enabled. Commit = redeploy = updated chatbot knowledge.
+  injected as the system instruction on every request, server-side. Commit =
+  redeploy = updated chatbot knowledge.
 - **`content/timeline.ts`** — typed array of events for `/timeline`.
 
 The bio is **never** sent to the client; only the model receives it.
