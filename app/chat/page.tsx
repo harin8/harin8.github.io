@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function ChatPage() {
   return (
-    <div className="px-4 sm:px-6 pt-28 pb-16">
-      <header className="max-w-4xl mx-auto mb-8">
+    <div className="px-4 sm:px-6 pt-20 sm:pt-24 md:pt-28 pb-10 sm:pb-16">
+      <header className="max-w-4xl mx-auto mb-6 sm:mb-8">
         <p className="hud-label text-accent mb-2">› secure channel — ready</p>
         <h1 className="font-display text-4xl sm:text-5xl font-bold leading-tight">
           query the operator.
@@ -25,7 +25,7 @@ export default function ChatPage() {
       <footer className="max-w-4xl mx-auto mt-6 hud-label text-haze flex flex-wrap gap-x-6 gap-y-2 justify-between">
         <span>› rate-limit · 10 / 10min</span>
         <span>› context · session-only · not stored</span>
-        <span>› press / for command palette</span>
+        <span className="hidden sm:inline">› press / for command palette</span>
       </footer>
     </div>
   );
