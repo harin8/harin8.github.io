@@ -8,7 +8,7 @@ Personal site (`harin.dev`) — Next.js 16 App Router, React 19, TypeScript stri
 - `@google/genai` (Gemini 2.5 Flash, streaming) — **not** Anthropic
 - Upstash Redis + Ratelimit (rate-limit only, no DB)
 - Zod for input validation
-- GSAP / Lenis / Framer Motion for animation
+- GSAP / Lenis for animation
 - Turbopack dev (`next dev --turbopack`)
 
 ## Code Style
