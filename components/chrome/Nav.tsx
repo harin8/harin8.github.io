@@ -13,31 +13,34 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-3 sm:py-4 backdrop-blur-sm bg-[color-mix(in_srgb,var(--color-bg)_70%,transparent)] border-b border-[color-mix(in_srgb,var(--color-haze)_30%,transparent)] safe-top safe-left safe-right">
-      <div className="flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50 px-3 sm:px-6 py-3 sm:py-4 backdrop-blur-sm bg-[color-mix(in_srgb,var(--color-bg)_70%,transparent)] border-b border-[color-mix(in_srgb,var(--color-haze)_30%,transparent)] safe-top safe-left safe-right">
+      <div className="flex items-center justify-between gap-2">
         <Link
           href="/"
-          className="tap-target inline-flex items-center font-mono text-sm tracking-[0.2em] text-accent uppercase"
+          className="tap-target inline-flex items-center font-mono text-sm tracking-[0.1em] sm:tracking-[0.2em] text-accent uppercase shrink-0"
         >
           <span className="text-haze">[</span>
-          harin@operator
+          <span className="sm:hidden">harin</span>
+          <span className="hidden sm:inline">harin@operator</span>
           <span className="text-haze">]</span>
         </Link>
 
-        <nav className="flex items-center gap-4 sm:gap-6">
+        <nav className="flex items-center gap-2 sm:gap-6">
           {links.map((link) => {
             const active = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`tap-target inline-flex items-center px-1 group relative font-mono text-xs tracking-[0.15em] uppercase transition-colors ${
+                className={`tap-target inline-flex items-center px-1 group relative font-mono text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors ${
                   active
                     ? "text-accent"
                     : "text-haze hover:text-ink"
                 }`}
               >
-                <span className="opacity-50 mr-1">{link.code}</span>
+                <span className="hidden sm:inline opacity-50 mr-1">
+                  {link.code}
+                </span>
                 {link.label}
                 {active && (
                   <span
