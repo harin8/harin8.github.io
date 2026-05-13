@@ -32,7 +32,7 @@ export function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`tap-target inline-flex items-center px-1 group relative font-mono text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors ${
+                className={`tap-target inline-flex items-center px-1 group relative font-mono text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors focus-visible:text-accent focus-visible:outline-none ${
                   active
                     ? "text-accent"
                     : "text-haze hover:text-ink"
@@ -58,7 +58,7 @@ export function Nav() {
             onClick={() =>
               window.dispatchEvent(new CustomEvent("operator:palette-open"))
             }
-            className="tap-target inline-flex items-center gap-1 px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-haze border border-haze/30 rounded hover:text-accent hover:border-accent/60 transition-colors"
+            className="tap-target inline-flex items-center gap-1 px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-haze border border-haze/30 rounded hover:text-accent hover:border-accent/60 transition-colors focus-visible:text-accent focus-visible:border-accent/60 focus-visible:outline-none"
           >
             <span className="text-accent text-base sm:text-[10px] leading-none">
               /

@@ -131,27 +131,28 @@ export function Terminal() {
   }
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto bg-bg-elev border border-haze/30 rounded-sm">
+    <div className="relative w-full max-w-4xl mx-auto flex-1 min-h-0 flex flex-col bg-bg-elev border border-haze/30 rounded-sm">
       {/* Title bar */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-haze/20 bg-bg/50">
+      <div className="shrink-0 flex items-center justify-between px-4 py-2 border-b border-haze/20 bg-bg/50">
         <div className="flex items-center gap-3 hud-label">
-          <span className="flex gap-1.5">
-            <span className="inline-block w-2 h-2 rounded-full bg-alert/70" />
-            <span className="inline-block w-2 h-2 rounded-full bg-haze/60" />
-            <span className="inline-block w-2 h-2 rounded-full bg-accent/80" />
-          </span>
+          <span
+            className={`inline-block w-2 h-2 rounded-full ${
+              streaming ? "bg-accent animate-pulse" : "bg-accent/70"
+            }`}
+            aria-label={streaming ? "streaming" : "ready"}
+          />
           <span>operator@harin:~$</span>
         </div>
         <div className="flex items-center gap-3 hud-label">
           <span className="text-haze">session #a3f9</span>
-          <span className="text-accent">gemini · 2.5 flash</span>
+          <span className="text-accent-dim">operator · live</span>
         </div>
       </div>
 
       {/* Transcript */}
       <div
         ref={scrollRef}
-        className="px-4 sm:px-5 py-5 sm:py-6 h-[60dvh] overflow-y-auto overscroll-contain font-mono text-sm leading-relaxed"
+        className="flex-1 min-h-0 px-4 sm:px-5 py-5 sm:py-6 overflow-y-auto overscroll-contain font-mono text-sm leading-relaxed"
       >
         {messages.length === 0 && (
           <div className="text-haze">
@@ -211,9 +212,17 @@ export function Terminal() {
                   <button
                     type="button"
                     onClick={() => send(s)}
-                    className="tap-target w-full text-left text-haze hover:text-accent transition-colors py-2 px-3 -mx-3 border border-transparent hover:border-accent/30 rounded-sm"
+                    className="tap-target w-full flex items-center justify-between gap-3 text-left text-ink/80 hover:text-accent focus-visible:text-accent transition-colors py-2 px-3 -mx-3 border border-haze/25 hover:border-accent/60 focus-visible:border-accent focus-visible:outline-none rounded-sm group"
                   >
-                    <span className="text-accent">›</span> {s}
+                    <span>
+                      <span className="text-accent-dim group-hover:text-accent">›</span> {s}
+                    </span>
+                    <span
+                      className="hud-label text-haze/60 group-hover:text-accent transition-colors"
+                      aria-hidden
+                    >
+                      ↵
+                    </span>
                   </button>
                 </li>
               ))}
@@ -233,7 +242,8 @@ export function Terminal() {
           placeholder="ask anything about my career, learning, or security work..."
           rows={1}
           disabled={streaming}
-          className="flex-1 bg-transparent resize-none outline-none font-mono text-sm text-ink placeholder:text-haze/60 disabled:opacity-50"
+          aria-label="Ask the operator"
+          className="flex-1 bg-transparent resize-none outline-none font-mono text-sm text-ink placeholder:text-haze disabled:opacity-50 focus-visible:ring-1 focus-visible:ring-accent focus-visible:rounded-sm"
         />
         {!streaming && (
           <button

@@ -28,15 +28,15 @@ export default function Home() {
           {/* Top metadata strip */}
           <div className="flex flex-wrap gap-x-6 gap-y-2 sm:gap-x-8 hud-label">
             <span>
-              <span className="text-haze/60">session</span>{" "}
+              <span className="text-haze">session</span>{" "}
               <span className="text-accent">#a3f9</span>
             </span>
             <span>
-              <span className="text-haze/60">role</span>{" "}
+              <span className="text-haze">role</span>{" "}
               security engineer → product
             </span>
             <span>
-              <span className="text-haze/60">status</span>{" "}
+              <span className="text-haze">status</span>{" "}
               <span className="text-accent">online</span>
             </span>
           </div>
@@ -53,7 +53,7 @@ export default function Home() {
                   stagger={80}
                 />
               </h1>
-              <p className="font-mono text-sm sm:text-base md:text-lg max-w-2xl text-ink/80 mt-2">
+              <p className="font-mono text-sm sm:text-base md:text-lg max-w-xl text-ink mt-2 text-balance">
                 <DecryptText
                   text="cybersecurity engineer. software builder. learning the craft of product."
                   delay={bootDone ? 900 : 99999}

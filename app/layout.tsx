@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono, Space_Grotesk, VT323 } from "next/font/google";
+import { JetBrains_Mono, VT323 } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/fx/SmoothScroll";
 import { Nav } from "@/components/chrome/Nav";
@@ -8,12 +8,6 @@ import { CommandPalette } from "@/components/chrome/CommandPalette";
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
   display: "swap",
 });
 
@@ -54,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jetbrains.variable} ${spaceGrotesk.variable} ${vt323.variable}`}
+      className={`${jetbrains.variable} ${vt323.variable}`}
     >
       <body className="bg-bg text-ink">
         <SmoothScroll />
