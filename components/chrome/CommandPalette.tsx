@@ -59,6 +59,8 @@ export function CommandPalette() {
   const [mode, setMode] = useState<Mode>("menu");
   const [history, setHistory] = useState<RunResult[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const idRef = useRef(0);
 
   // Toggle on "/"
@@ -88,9 +90,34 @@ export function CommandPalette() {
   // Focus input on open
   useEffect(() => {
     if (open) {
+      previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
       const t = setTimeout(() => inputRef.current?.focus(), 30);
       return () => clearTimeout(t);
     }
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const focusable = panel.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
   // Cross-component opener (mobile nav button, home bottom prompt)
@@ -104,6 +131,7 @@ export function CommandPalette() {
     setOpen(false);
     setInput("");
     setMode("menu");
+    previouslyFocusedRef.current?.focus();
   }, []);
 
   const pushResult = useCallback((command: string, output: string[]) => {
@@ -253,12 +281,16 @@ export function CommandPalette() {
       onClick={close}
     >
       <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="recon-console-title"
         className="w-full max-w-2xl bg-bg-elev border border-accent/40 shadow-[0_0_60px_-10px_var(--color-accent)] rounded-sm overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Title bar */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-haze/20 bg-bg/50 hud-label">
-          <span>› recon console</span>
+          <span id="recon-console-title">› recon console</span>
           <button
             type="button"
             onClick={close}
@@ -302,7 +334,8 @@ export function CommandPalette() {
             onChange={(e) => setInput(e.target.value)}
             disabled={mode === "running"}
             placeholder="try: whoami · help · go chat"
-            className="flex-1 bg-transparent outline-none font-mono text-sm text-ink placeholder:text-haze/60 disabled:opacity-50"
+            aria-label="Run a command"
+            className="flex-1 bg-transparent outline-none font-mono text-sm text-ink placeholder:text-haze disabled:opacity-50 focus-visible:ring-1 focus-visible:ring-accent focus-visible:rounded-sm"
           />
           {mode === "running" && (
             <span className="hud-label text-accent">running</span>

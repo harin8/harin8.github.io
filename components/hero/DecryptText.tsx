@@ -31,6 +31,11 @@ export function DecryptText({
   const finishedRef = useRef(false);
 
   useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setOutput(text.split(""));
+      return;
+    }
     finishedRef.current = false;
     const start = performance.now() + delay;
     const chars = text.split("");

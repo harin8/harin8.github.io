@@ -242,7 +242,8 @@ export function Terminal() {
           placeholder="ask anything about my career, learning, or security work..."
           rows={1}
           disabled={streaming}
-          className="flex-1 bg-transparent resize-none outline-none font-mono text-sm text-ink placeholder:text-haze/60 disabled:opacity-50"
+          aria-label="Ask the operator"
+          className="flex-1 bg-transparent resize-none outline-none font-mono text-sm text-ink placeholder:text-haze disabled:opacity-50 focus-visible:ring-1 focus-visible:ring-accent focus-visible:rounded-sm"
         />
         {!streaming && (
           <button
