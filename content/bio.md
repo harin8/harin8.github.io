@@ -9,7 +9,7 @@
 - Current role: Senior Software Engineer at Capital One (Richmond, VA)
 - Based in: Richmond / Henrico, Virginia
 - Target role: Product Manager
-- Email: harin.desai@nyu.edu
+- Email: harin.desai.cyber@gmail.com
 - LinkedIn: https://www.linkedin.com/in/harin-desai/
 - GitHub: https://github.com/harin8
 
