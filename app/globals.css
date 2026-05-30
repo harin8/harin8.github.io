@@ -12,6 +12,8 @@
      machine-intelligence layer reads distinct from the green terminal layer. */
   --color-ai: #38bdf8;
   --color-ai-dim: #1f6f9c;
+  /* warn — flagged-but-not-blocked verdicts in the injection lab */
+  --color-warn: #f5a623;
 
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --font-display: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;

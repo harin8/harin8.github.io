@@ -58,6 +58,7 @@ const STATIC_COMMANDS: Record<string, () => string[]> = {
     "  whoami            — operator identity",
     "  workflow          — how i work with ai",
     "  stack             — my ai / dev toolset",
+    "  inject            — open the prompt-injection lab",
     "  skills --json     — capability matrix",
     "  cv --download     — fetch resume",
     "  contact --pgp     — public key fingerprint",
@@ -241,6 +242,14 @@ export function CommandPalette() {
         const target = goMatch[1] === "home" ? "/" : `/${goMatch[1]}`;
         router.push(target);
         pushResult(cmd, [`navigating → ${target}`]);
+        setTimeout(close, 250);
+        return;
+      }
+
+      // inject / demo — jump to the injection lab
+      if (cmd === "inject" || cmd === "demo" || cmd === "playground") {
+        router.push("/lab#playground");
+        pushResult(cmd, ["opening injection lab → /lab#playground"]);
         setTimeout(close, 250);
         return;
       }

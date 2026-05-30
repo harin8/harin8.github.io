@@ -14,3 +14,11 @@ test("lab page renders the agent loop", async ({ page }) => {
   // The interactive agent run exposes a run/idle status label.
   await expect(page.getByText("agent.run()")).toBeVisible();
 });
+
+test("injection lab blocks an instruction-override probe", async ({ page }) => {
+  await page.goto("/lab");
+
+  await page.getByRole("button", { name: "instruction override" }).click();
+  // The request inspector should classify it as blocked.
+  await expect(page.getByText("BLOCKED")).toBeVisible();
+});

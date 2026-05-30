@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AgentLoop } from "@/components/lab/AgentLoop";
 import { StackGrid } from "@/components/lab/StackGrid";
 import { Principles } from "@/components/lab/Principles";
+import { InjectionLab } from "@/components/lab/InjectionLab";
 
 export const metadata = {
   title: "harin // lab",
@@ -71,6 +72,26 @@ export default function LabPage() {
             </h2>
           </div>
           <Principles />
+        </section>
+
+        {/* Injection lab — interactive AI-security demo */}
+        <section
+          id="playground"
+          className="mb-14 sm:mb-20 scroll-mt-24"
+          aria-labelledby="lab-heading"
+        >
+          <div className="flex items-baseline gap-3 mb-5">
+            <span className="hud-label text-haze">04</span>
+            <h2 id="lab-heading" className="font-mono text-lg sm:text-xl text-ink">
+              injection lab
+            </h2>
+          </div>
+          <p className="font-mono text-sm text-ink/60 mb-6 max-w-2xl">
+            prompt injection is the top risk for LLM apps. here's a live
+            pre-filter — the kind i&apos;d put in front of a model. type an
+            attack and watch the inspector classify it.
+          </p>
+          <InjectionLab />
         </section>
 
         {/* Live artifact tie-in */}
