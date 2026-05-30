@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   classify,
   PRESET_ATTACKS,
@@ -9,6 +9,7 @@ import {
 } from "@/lib/guardrails";
 
 const METER_CELLS = 14;
+const SCAN_MS = 450;
 
 const DECISION_STYLE: Record<
   Decision,
@@ -75,17 +76,25 @@ function segment(text: string, hits: Hit[]): Segment[] {
 
 export function InjectionLab() {
   const [input, setInput] = useState("");
+  const [scanned, setScanned] = useState("");
+  const [analyzing, setAnalyzing] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [blocked, setBlocked] = useState(0);
+  const timerRef = useRef<number | null>(null);
 
-  const verdict = useMemo(() => classify(input), [input]);
+  useEffect(
+    () => () => {
+      if (timerRef.current) window.clearTimeout(timerRef.current);
+    },
+    [],
+  );
+
+  // Inspector reflects the last *scanned* payload, not live keystrokes — so the
+  // SCAN button has a real, visible job.
+  const verdict = useMemo(() => classify(scanned), [scanned]);
   const style = DECISION_STYLE[verdict.decision];
-  const segs = useMemo(() => segment(input, verdict.hits), [input, verdict.hits]);
+  const segs = useMemo(() => segment(scanned, verdict.hits), [scanned, verdict.hits]);
 
-  const filled = Math.round((verdict.score / 100) * METER_CELLS);
-  const meter = "▮".repeat(filled) + "░".repeat(METER_CELLS - filled);
-
-  // distinct triggered rules, in document order
   const triggered = useMemo(() => {
     const seen = new Set<string>();
     return verdict.hits.filter((h) => {
@@ -95,36 +104,65 @@ export function InjectionLab() {
     });
   }, [verdict.hits]);
 
-  function scan() {
-    if (!input.trim()) return;
-    setAttempts((a) => a + 1);
-    if (verdict.decision === "blocked") setBlocked((b) => b + 1);
+  const hasResult = scanned.trim().length > 0;
+  const dirty = input.trim().length > 0 && input !== scanned;
+
+  const filled = Math.round((verdict.score / 100) * METER_CELLS);
+  const meter = "▮".repeat(filled) + "░".repeat(METER_CELLS - filled);
+
+  const runScan = useCallback((text: string) => {
+    if (!text.trim()) return;
+    if (timerRef.current) window.clearTimeout(timerRef.current);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const commit = () => {
+      setScanned(text);
+      setAttempts((a) => a + 1);
+      if (classify(text).decision === "blocked") setBlocked((b) => b + 1);
+      setAnalyzing(false);
+      timerRef.current = null;
+    };
+
+    setAnalyzing(true);
+    if (reduce) {
+      commit();
+    } else {
+      timerRef.current = window.setTimeout(commit, SCAN_MS);
+    }
+  }, []);
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    // Enter scans; Shift+Enter inserts a newline.
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      runScan(input);
+    }
   }
+
+  // Badge reflects scanning → result → idle.
+  const badgeLabel = analyzing ? "SCANNING" : hasResult ? style.label : "IDLE";
+  const badgeClass = analyzing
+    ? "border-ai/60 text-ai bg-ai/10"
+    : hasResult
+      ? style.badge
+      : "border-haze/40 text-haze";
 
   return (
     <div className="workbench-panel p-4 sm:p-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
         {/* Attack composer */}
         <div className="flex flex-col">
-          <label
-            htmlFor="injection-input"
-            className="hud-label text-ai mb-2 block"
-          >
+          <label htmlFor="injection-input" className="hud-label text-ai mb-2 block">
             › your attack
           </label>
           <textarea
             id="injection-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
-                e.preventDefault();
-                scan();
-              }
-            }}
+            onKeyDown={onKeyDown}
             maxLength={600}
             rows={4}
-            placeholder="try to make the operator break its rules — or pick a probe below…"
+            placeholder="type an attack and press scan (or enter) — or pick a probe below…"
             aria-label="Prompt-injection attempt"
             className="w-full bg-bg/60 border border-haze/30 rounded-sm px-3 py-2 font-mono text-sm text-ink placeholder:text-haze resize-none outline-none focus-visible:ring-1 focus-visible:ring-ai focus-visible:border-ai"
           />
@@ -134,7 +172,10 @@ export function InjectionLab() {
               <button
                 key={p.label}
                 type="button"
-                onClick={() => setInput(p.text)}
+                onClick={() => {
+                  setInput(p.text);
+                  runScan(p.text);
+                }}
                 className="tap-target font-mono text-xs px-2.5 py-1.5 border border-haze/30 text-ink/75 rounded-sm hover:border-ai/60 hover:text-ai transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ai"
               >
                 {p.label}
@@ -145,10 +186,11 @@ export function InjectionLab() {
           <div className="mt-4 flex items-center justify-between gap-3">
             <button
               type="button"
-              onClick={scan}
-              className="tap-target inline-flex items-center gap-1.5 px-4 py-2 border border-ai/50 text-ai hover:bg-ai hover:text-bg transition-colors font-mono text-xs uppercase tracking-wider rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ai"
+              onClick={() => runScan(input)}
+              disabled={analyzing || !input.trim()}
+              className="tap-target inline-flex items-center gap-1.5 px-4 py-2 border border-ai/50 text-ai hover:bg-ai hover:text-bg transition-colors font-mono text-xs uppercase tracking-wider rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ai disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-ai disabled:cursor-not-allowed"
             >
-              ▶ scan
+              {analyzing ? "▮▮ scanning" : "▶ scan"}
             </button>
             <span className="hud-label text-haze">
               attempts {String(attempts).padStart(2, "0")} · blocked{" "}
@@ -159,37 +201,62 @@ export function InjectionLab() {
 
         {/* Request inspector */}
         <div className="flex flex-col border-t lg:border-t-0 lg:border-l border-haze/15 pt-5 lg:pt-0 lg:pl-6">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-1">
             <span className="hud-label text-haze">› request inspector</span>
             <span
-              className={`font-mono text-xs px-2 py-1 border rounded-sm ${style.badge}`}
+              className={`font-mono text-xs px-2 py-1 border rounded-sm ${badgeClass} ${
+                analyzing ? "animate-pulse" : ""
+              }`}
             >
-              {input.trim() ? style.label : "IDLE"}
+              {badgeLabel}
             </span>
+          </div>
+          <div className="h-4 mb-2">
+            {dirty && !analyzing && (
+              <span className="hud-label text-warn">
+                input changed — press scan to re-classify
+              </span>
+            )}
           </div>
 
           {/* Risk meter */}
           <div className="flex items-center gap-3 mb-4">
             <span className="hud-label text-haze">risk</span>
-            <span
-              className={`font-mono text-xs ${style.text} hidden xs:inline select-none`}
-              aria-hidden
-            >
-              {meter}
-            </span>
+            {!analyzing && hasResult && (
+              <span
+                className={`font-mono text-xs ${style.text} hidden xs:inline select-none`}
+                aria-hidden
+              >
+                {meter}
+              </span>
+            )}
             <div className="flex-1 h-px bg-haze/20 relative overflow-hidden">
-              <div
-                className={`h-full transition-[width] duration-150 ${style.bar}`}
-                style={{ width: `${verdict.score}%` }}
-              />
+              {analyzing ? (
+                <div
+                  className="ai-scan absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-ai to-transparent"
+                  aria-hidden
+                />
+              ) : (
+                <div
+                  className={`h-full transition-[width] duration-150 ${
+                    hasResult ? style.bar : "bg-transparent"
+                  }`}
+                  style={{ width: `${hasResult ? verdict.score : 0}%` }}
+                />
+              )}
             </div>
-            <span className={`hud-label ${style.text}`}>
-              {String(verdict.score).padStart(3, "0")}
+            <span className={`hud-label ${analyzing ? "text-ai" : style.text}`}>
+              {analyzing ? "···" : hasResult ? String(verdict.score).padStart(3, "0") : "000"}
             </span>
           </div>
 
-          {/* Echoed input with highlighted hits */}
-          {input.trim() ? (
+          {/* Payload echo */}
+          {analyzing ? (
+            <p className="font-mono text-sm text-ai/90 bg-bg/50 border border-ai/15 rounded-sm px-3 py-2 mb-4">
+              <span className="text-haze select-none">›</span> analyzing payload
+              <span className="cursor-block" aria-hidden />
+            </p>
+          ) : hasResult ? (
             <p className="font-mono text-sm leading-relaxed bg-bg/50 border border-haze/15 rounded-sm px-3 py-2 mb-4 whitespace-pre-wrap break-words">
               {segs.map((s, i) =>
                 s.hot ? (
@@ -210,12 +277,12 @@ export function InjectionLab() {
             </p>
           ) : (
             <p className="font-mono text-sm text-haze mb-4">
-              waiting for input. the inspector classifies every keystroke.
+              no scan yet. type an attack or pick a probe, then press scan.
             </p>
           )}
 
           {/* Triggered rules */}
-          {triggered.length > 0 ? (
+          {!analyzing && triggered.length > 0 && (
             <ul className="flex flex-col gap-2.5">
               {triggered.map((h) => (
                 <li key={h.ruleId} className="flex gap-3">
@@ -235,12 +302,13 @@ export function InjectionLab() {
                 </li>
               ))}
             </ul>
-          ) : input.trim() ? (
+          )}
+          {!analyzing && hasResult && triggered.length === 0 && (
             <p className="font-mono text-sm text-accent/90">
               clean — passed the pre-filter. but heuristics aren&apos;t a
               guarantee; real defense is layered.
             </p>
-          ) : null}
+          )}
         </div>
       </div>
 
