@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/", label: "/home", code: "00" },
-  { href: "/timeline", label: "/timeline", code: "01" },
-  { href: "/chat", label: "/chat", code: "02" },
+  { href: "/lab", label: "/lab", code: "01" },
+  { href: "/timeline", label: "/timeline", code: "02" },
+  { href: "/chat", label: "/chat", code: "03" },
 ];
 
 export function Nav() {
@@ -25,7 +26,7 @@ export function Nav() {
           <span className="text-haze">]</span>
         </Link>
 
-        <nav className="flex items-center gap-2 sm:gap-6">
+        <nav className="flex items-center gap-1.5 sm:gap-6">
           {links.map((link) => {
             const active = pathname === link.href;
             return (

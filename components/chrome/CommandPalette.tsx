@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { TIMELINE } from "@/content/timeline";
+import { WORKFLOW, STACK } from "@/content/ai";
 
 type Mode = "menu" | "running" | "ask";
 
@@ -17,17 +18,32 @@ const STATIC_COMMANDS: Record<string, () => string[]> = {
   whoami: () => [
     "harin",
     "  uid: 1000  groups: engineers, security, builders",
-    "  current: software engineer · security",
-    "  target:  product manager",
-    "  status:  in the long pivot",
+    "  current: software engineer · security · ai",
+    "  focus:   ai-forward engineering — ship with models, keep the engineering",
+    "  status:  building",
   ],
   "skills --json": () => [
     "{",
-    '  "code":     ["python", "go", "ts", "rust (learning)"],',
-    '  "security": ["appsec", "threat modeling", "ctf", "incident response"],',
-    '  "product":  ["specs", "user research (apprentice)", "prioritization"],',
-    '  "soft":     ["writing", "reading rooms", "saying no"]',
+    '  "ai":       ["agentic workflows", "claude code", "mcp", "evals", "rag"],',
+    '  "code":     ["typescript", "python", "java", "react", "angular", "c"],',
+    '  "security": ["appsec", "pentest", "threat modeling", "ctf"],',
+    '  "cloud":    ["aws lambda", "fargate", "s3", "dynamodb", "guardduty"]',
     "}",
+  ],
+  workflow: () => [
+    "ai workflow — intent in, shipped diff out:",
+    ...WORKFLOW.map(
+      (s, i) =>
+        `  ${String(i + 1).padStart(2, "0")}  ${s.id.padEnd(8)} ${s.title}`,
+    ),
+    "run it interactively at /lab  ·  try: go lab",
+  ],
+  stack: () => [
+    "the setup:",
+    ...STACK.flatMap((g) => [
+      `  [${g.group}]`,
+      ...g.tools.map((t) => `    · ${t.name} — ${t.note}`),
+    ]),
   ],
   "cv --download": () => [
     "[info] cv download not configured.",
@@ -40,12 +56,14 @@ const STATIC_COMMANDS: Record<string, () => string[]> = {
   help: () => [
     "available commands:",
     "  whoami            — operator identity",
+    "  workflow          — how i work with ai",
+    "  stack             — my ai / dev toolset",
     "  skills --json     — capability matrix",
     "  cv --download     — fetch resume",
     "  contact --pgp     — public key fingerprint",
-    "  go <home|timeline|chat>  — navigate",
+    "  go <home|lab|timeline|chat>  — navigate",
     "  year <YYYY>       — jump to timeline event",
-    'ask "<question>"  — stream an answer about harin',
+    '  ask "<question>"  — stream an answer about harin',
     "  help              — this message",
     "  clear             — clear console",
   ],
@@ -218,7 +236,7 @@ export function CommandPalette() {
       }
 
       // go <route>
-      const goMatch = cmd.match(/^go\s+(home|timeline|chat)$/);
+      const goMatch = cmd.match(/^go\s+(home|lab|timeline|chat)$/);
       if (goMatch) {
         const target = goMatch[1] === "home" ? "/" : `/${goMatch[1]}`;
         router.push(target);
@@ -333,7 +351,7 @@ export function CommandPalette() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={mode === "running"}
-            placeholder="try: whoami · help · go chat"
+            placeholder="try: whoami · workflow · go lab"
             aria-label="Run a command"
             className="flex-1 bg-transparent outline-none font-mono text-sm text-ink placeholder:text-haze disabled:opacity-50 focus-visible:ring-1 focus-visible:ring-accent focus-visible:rounded-sm"
           />
