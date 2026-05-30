@@ -8,7 +8,7 @@
 - Name: Harin Desai
 - Current role: Senior Software Engineer at Capital One (Richmond, VA)
 - Based in: Richmond / Henrico, Virginia
-- Target role: Product Manager
+- Target role: AI-forward software engineer — ships with AI-driven/agentic workflows on top of a deep security and software-engineering background. Strong product sense from PM-adjacent work is a plus, not the headline.
 - Email: harin.desai.cyber@gmail.com
 - LinkedIn: https://www.linkedin.com/in/harin-desai/
 - GitHub: https://github.com/harin8
@@ -59,9 +59,16 @@
 ## Code
 - I started coding in Python professionally. These days I work mostly in Angular and React, and I also know Java and C.
 
-## The PM pivot
-- Working closely with PMs, designers, and data analysts on the Capital One onboarding work made me realize the impact I want to make is at the product-decision level — deciding what to build and why — not just executing what's already been decided.
-- The transition is the work: I've been defining success metrics, sequencing rollouts by risk, and pushing on the "why" behind the spec rather than only the code.
+## AI workflow
+- I'm an AI-forward engineer: I build with coding agents (Claude Code, Cursor, Copilot) and treat the engineering around the model as the real work, not an afterthought.
+- My loop for every change: frame the intent and acceptance criteria; load real context into the model (repo conventions, file maps, and live data via MCP) instead of letting it guess; make the agent plan before it diffs; draft in small, reviewable changes; then verify with types, lint, tests, and a real run before anything ships.
+- Principles I hold: ground the model first (context beats cleverness); plan before diff; verify, don't vibe (green or it didn't happen); small diffs with a human reading every line; treat model output as untrusted input (validate at the boundary, scan for secrets, least privilege); the model writes the how, I own the what and the why.
+- This site is itself an example of that workflow: the operator console is grounded server-side in a single bio file, input is validated with Zod, requests are rate-limited per IP, and provider errors never leak to the client.
+- The interactive version of this workflow — the agent loop, the tool stack, and the principles — lives on the /lab page of this site.
+
+## Product sense
+- My best engineering happens when I argue about the spec, not just the code. Working closely with PMs, designers, and data analysts on the Capital One onboarding work taught me to operate at the product-decision level — deciding what to build and why — while still shipping it myself.
+- Concretely: defining multi-metric success frameworks, sequencing rollouts by risk, and pushing on the "why" behind a spec. It makes me a better engineer, especially when steering AI agents toward the right outcome rather than just a working diff.
 
 ## Personal
 - I love sports — cricket, tennis, pickleball, chess, table tennis, volleyball. I like discovering new music, reading, and watching documentaries.

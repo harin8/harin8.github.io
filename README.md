@@ -1,16 +1,19 @@
-# harin // operator console
+# harin // ai-forward engineer
 
-Personal site. Cyber-noir aesthetic. Streaming chatbot grounded in a bio file.
-Built with Next.js 16, React 19, Tailwind v4, GSAP, and the Google Gemini SDK.
+Personal site for an AI-forward engineer. Hybrid terminal + "AI workbench"
+aesthetic. Streaming chatbot grounded in a bio file. Built with Next.js 16,
+React 19, Tailwind v4, GSAP, and the Google Gemini SDK.
 
 ## Pages
 
 - `/` — Home. Boot sequence → matrix rain → decryption-text name reveal.
+- `/lab` — The AI workbench: an interactive "agent run" through the dev
+  workflow, the tool stack, and the operating principles.
 - `/timeline` — Pinned-scroll z-axis trace through life events.
-- `/chat` — Streaming terminal that talks about Harin.
+- `/chat` — Streaming terminal ("the operator") that talks about Harin.
 - `/` (palette) — Press `/` anywhere on the site for a recon-style command palette
-  with `whoami`, `skills --json`, navigation shortcuts, and inline `ask "..."`
-  streaming.
+  with `whoami`, `workflow`, `stack`, `skills --json`, navigation shortcuts, and
+  inline `ask "..."` streaming.
 
 ## Stack
 
@@ -20,7 +23,6 @@ Built with Next.js 16, React 19, Tailwind v4, GSAP, and the Google Gemini SDK.
 | Styling | Tailwind CSS v4 + CSS variables for tokens |
 | Smooth scroll | Lenis |
 | Scroll choreography | GSAP + ScrollTrigger |
-| Micro-interactions | Framer Motion |
 | LLM | `@google/genai` — Gemini 2.5 Flash (streaming) |
 | Rate limit | Upstash Redis + Ratelimit |
 | Validation | Zod |
@@ -58,6 +60,9 @@ silently skipped if the env vars are missing.
   injected as the system instruction on every request, server-side. Commit =
   redeploy = updated chatbot knowledge.
 - **`content/timeline.ts`** — typed array of events for `/timeline`.
+- **`content/ai.ts`** — the AI workflow, tool stack, and principles rendered on
+  `/lab` (and surfaced by the `workflow` / `stack` palette commands). Edit the
+  tool names and notes here to match your real setup.
 
 The bio is **never** sent to the client; only the model receives it.
 

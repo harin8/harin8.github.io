@@ -19,14 +19,14 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: "harin // operator console",
+  title: "harin // ai-forward engineer",
   description:
-    "Cybersecurity engineer building product. Decryption, code, and the long pivot to PM.",
+    "Security engineer who builds with AI. An interactive console: the agent workflow behind the code, a career trace, and a grounded LLM you can query.",
   metadataBase: new URL("https://harin.dev"),
   openGraph: {
-    title: "harin // operator console",
+    title: "harin // ai-forward engineer",
     description:
-      "Cybersecurity engineer building product. Decryption, code, and the long pivot to PM.",
+      "Security engineer who builds with AI. The agent workflow, the stack, the principles — and a grounded LLM you can query.",
     type: "website",
   },
   robots: { index: true, follow: true },

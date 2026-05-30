@@ -33,7 +33,7 @@ export default function Home() {
             </span>
             <span>
               <span className="text-haze">role</span>{" "}
-              security engineer → product
+              security engineer · builds with ai
             </span>
             <span>
               <span className="text-haze">status</span>{" "}
@@ -55,7 +55,7 @@ export default function Home() {
               </h1>
               <p className="font-mono text-sm sm:text-base md:text-lg max-w-xl text-ink mt-2 text-balance">
                 <DecryptText
-                  text="cybersecurity engineer. software builder. learning the craft of product."
+                  text="cybersecurity engineer. software builder. i ship with ai-driven workflows."
                   delay={bootDone ? 900 : 99999}
                   duration={400}
                   stagger={12}
@@ -64,6 +64,13 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 mt-4">
+              <Link
+                href="/lab"
+                className="group inline-flex items-center justify-center gap-2 px-5 py-3 border border-ai/60 text-ai hover:bg-ai hover:text-bg transition-colors font-mono text-sm tracking-wider uppercase"
+              >
+                <span>› enter the lab</span>
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </Link>
               <Link
                 href="/timeline"
                 className="group inline-flex items-center justify-center gap-2 px-5 py-3 border border-accent/60 text-accent hover:bg-accent hover:text-bg transition-colors font-mono text-sm tracking-wider uppercase"

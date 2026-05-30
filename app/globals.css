@@ -8,10 +8,19 @@
   --color-accent-dim: #4d8a78;
   --color-alert: #ff2e63;
   --color-haze: #8a96a4;
+  /* AI/ML accent — used in the "workbench" half of the hybrid theme so the
+     machine-intelligence layer reads distinct from the green terminal layer. */
+  --color-ai: #38bdf8;
+  --color-ai-dim: #1f6f9c;
+  /* warn — flagged-but-not-blocked verdicts in the injection lab */
+  --color-warn: #f5a623;
 
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --font-display: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --font-hud: var(--font-vt323), ui-monospace, monospace;
+
+  /* extra-small breakpoint for the densest phone widths */
+  --breakpoint-xs: 26rem;
 }
 
 :root {
@@ -196,6 +205,80 @@ body {
 .tap-target {
   min-height: 44px;
   min-width: 44px;
+}
+
+/* ── AI workbench layer ───────────────────────────────────────────────
+   The "lab" half of the hybrid theme: clean machine-intelligence panels
+   that sit over the terminal chrome. Distinct from the green CRT layer. */
+
+.workbench-panel {
+  position: relative;
+  background: color-mix(in srgb, var(--color-bg-elev) 92%, var(--color-ai) 8%);
+  border: 1px solid color-mix(in srgb, var(--color-ai) 30%, transparent);
+  border-radius: 2px;
+}
+.workbench-panel::before {
+  /* corner brackets — schematic / blueprint feel */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--color-ai), var(--color-ai)) left top / 10px 1px no-repeat,
+    linear-gradient(var(--color-ai), var(--color-ai)) left top / 1px 10px no-repeat,
+    linear-gradient(var(--color-ai), var(--color-ai)) right bottom / 10px 1px no-repeat,
+    linear-gradient(var(--color-ai), var(--color-ai)) right bottom / 1px 10px no-repeat;
+  opacity: 0.55;
+}
+
+/* Faint engineering grid backdrop for the lab page */
+.ai-grid-bg {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-ai) 9%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-ai) 9%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 44px 44px;
+}
+
+/* Active-stage pulse on the agent loop */
+@keyframes ai-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-ai) 55%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-ai) 0%, transparent);
+  }
+}
+.ai-pulse {
+  animation: ai-pulse 1.6s ease-out infinite;
+}
+
+/* Token/throughput meter sweep */
+@keyframes ai-scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.ai-scan {
+  animation: ai-scan 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-pulse,
+  .ai-scan {
+    animation: none !important;
+  }
 }
 
 /* Safe-area-inset utilities (Tailwind v4 ships none) */
