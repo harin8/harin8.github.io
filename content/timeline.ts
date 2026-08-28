@@ -49,6 +49,18 @@ export const TIMELINE: TimelineEvent[] = [
     tag: "PRODUCT",
   },
   {
+    year: "2025",
+    title: "the system, not the screen",
+    body: "architected the onboarding platform end to end — a config-driven service that decides which setup tasks a customer sees, rather than a hardcoded flow per card type. the best engineering call was what not to build: reuse the services that already existed.",
+    tag: "CODE",
+  },
+  {
+    year: "2026",
+    title: "small business to 30 million",
+    body: "took onboarding from a small business pilot to ~30M discover customers, staged by blast radius rather than by calendar. other lines of business plugged their own tasks into it. scale wasn't a thing to fix at the end — it was the order you ship in.",
+    tag: "PRODUCT",
+  },
+  {
     year: "now",
     title: "the long pivot",
     body: "defining success metrics, sequencing rollouts by risk, pushing on what to build and why. shipping software and shipping product are different sports. the gap is the work.",
