@@ -6,7 +6,7 @@
 ## Identity
 
 - Name: Harin Desai
-- Current role: Senior Software Engineer at Capital One (Richmond, VA)
+- Current role: Lead Software Engineer at Capital One (Richmond, VA)
 - Based in: Richmond / Henrico, Virginia
 - Target role: Product Manager
 - Email: harin.desai.cyber@gmail.com
@@ -15,7 +15,7 @@
 
 ## Career
 
-### Capital One — Senior Software Engineer (May 2024 – Present, Richmond, VA)
+### Capital One — Lead Software Engineer (May 2024 – Present, Richmond, VA)
 - Led engineering for Capital One's credit card customer onboarding experience — building the systems and infrastructure to engage customers early, grow purchase volume and value, and improve long-term retention.
 - Built the Welcome feature for first-time web app logins: screens and dynamic content that introduce new card customers to cashback, rewards, loyalty benefits, perks, and recommended setup actions tailored to their card type.
 - Developed Account Setup entry points and task experiences that help customers start spending faster — Choose How You Pay, Add Authorized User, AutoPay, Alerts Review, paperless enrollment, and card activation flows.
@@ -25,7 +25,12 @@
 - This was the work where I started thinking like a PM: defining a multi-metric success framework (north-star year-1 spend and product adoption; primary metrics like welcome-flow completion and time-to-task; guardrails like first-session inbound call rate and no-action rate), sequencing audiences by rollout risk, gating each rollout stage on real-time metrics, and partnering closely with PMs, designers, and data analysts on what to build and why.
 - Tech: Figma, Angular, Python, Java, DynamoDB, Snowflake, OneTag, Splunk, New Relic, Optimizely.
 
-### Arc XP (A Washington Post company) — Application Security Engineer (Intern)
+### Small company — Software Engineer (2023)
+- After graduating from NYU in May 2023, worked as a software engineer at a small company — the move from breaking software to building it.
+- Separately, did pro-bono cloud security work for a health tech startup, helping them with their cloud security needs.
+- Company names intentionally omitted from the public site.
+
+### Arc XP (A Washington Post company) — Application Security Engineer (Intern) (Summer 2022)
 - Conducted security analyses on clients' code that interacts with Arc XP's content and services. Arc XP is a $50mm+ ARR agile content management system that helps publishers centralize content, production, collaboration, and distribution on top of AWS.
 - Demonstrated threat hunting, proactively identifying emerging threats relevant to the client's industry.
 - Provided regular reports and intelligence briefs on potential vulnerabilities and adversary TTPs.
