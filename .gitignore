@@ -38,8 +38,16 @@ yarn-error.log*
 # vercel
 .vercel
 
-# claude code local tooling
-.claude/
+# claude code: commit the pipeline (agents, skills, hooks, settings, agent memory), keep local files out
+.claude/*
+!.claude/agents/
+!.claude/skills/
+!.claude/hooks/
+!.claude/settings.json
+!.claude/agent-memory/
+
+# change pipeline evidence (screenshots stay local)
+docs/changes/*/screenshots/
 
 # typescript
 *.tsbuildinfo

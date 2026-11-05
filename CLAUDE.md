@@ -22,7 +22,7 @@ Personal site (`harin.dev`) — Next.js 16 App Router, React 19, TypeScript stri
 ## Build & Run
 - Dev: `npm run dev`
 - Build: `npm run build`
-- Lint: `npm run lint` (Next built-in)
+- Lint: `npm run lint` is currently broken: Next 16 removed `next lint`. Needs an ESLint flat config before it can gate anything.
 - Typecheck: `npm run typecheck`
 - E2E: `npm run test:e2e` (Playwright auto-starts the dev server)
 
@@ -43,12 +43,19 @@ Env required: `GEMINI_API_KEY`. Optional: `UPSTASH_REDIS_REST_URL`, `UPSTASH_RED
 - CSP in `vercel.json` is strict. Adding external scripts/images/fonts requires editing `connect-src`/`script-src`/`img-src` deliberately.
 
 ## Testing
-Playwright smoke tests live in `e2e/`. Config: `playwright.config.ts` (Chromium only, dev-server in local mode, build+start in CI). CI runs typecheck + lint + e2e on every push and PR to `main` via `.github/workflows/e2e.yml`. Coverage is not measured yet — don't claim a coverage number in PRs.
+Playwright smoke tests live in `e2e/`. Config: `playwright.config.ts` (Chromium only, dev-server in local mode, build+start in CI). There is no CI workflow right now (`.github/workflows/e2e.yml` was removed in `a8bb69f`); run typecheck and e2e locally. The `/ship` pipeline does this in its review and testing phases. Coverage is not measured yet — don't claim a coverage number in PRs.
 
 ## Conventions
 - Branches: `claude/<short-desc>-<id>` for AI-generated work, target `main`.
 - Commits: lowercase scope prefix common (`mobile: ...`, `chat: ...`). Not enforced.
 - PRs reviewed and merged on GitHub; Vercel auto-deploys previews on push.
+
+## Change pipeline
+All changes go through `/ship` (see `docs/PIPELINE.md`): brief → design → content review → develop → code review → test → `/deploy`.
+- Each change has a folder in `docs/changes/<id>/`; its `status.md` is the source of truth. Read it before resuming work on a change.
+- Review agents live in `.claude/agents/`: `content-editor`, `code-reviewer`, `qa-tester`. Give them the change folder; don't pre-judge the work.
+- User-facing text must match the approved copy deck in the change's `design.md`.
+- Never push to `main` or deploy to production directly. Production happens only by merging a reviewed PR through `/deploy`.
 
 ## Don't
 - Don't add a database, ORM, or auth layer — Upstash is only used for IP rate-limit.
@@ -64,7 +71,7 @@ Classified via `/everything-claude-code:agent-sort`. Skills resolve through the 
 - `frontend-patterns`, `nextjs-turbopack`, `api-design`, `coding-standards`
 - `seo`, `accessibility`, `security-review`, `code-review`, `browser-qa`
 - `tdd-workflow`, `e2e-testing` — Playwright is wired up
-- `github-ops`, `deployment-patterns` — CI lives at `.github/workflows/e2e.yml`
+- `github-ops`, `deployment-patterns` — no CI workflow at the moment; deploys go through `/deploy`
 - `git-workflow`, `prp-commit`, `prp-pr`
 - `ui-ux-pro-max:ui-ux-pro-max`, `update-config`
 
