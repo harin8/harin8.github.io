@@ -1,6 +1,6 @@
 ---
 name: product-brief
-description: Turn a requested change to harin.dev into a short product brief with goals, scope and testable acceptance criteria. Used as phase 1 of /ship; also usable alone as "/product-brief <idea>" to think a change through before building.
+description: Turn a requested change to the portfolio site into a short product brief with goals, scope and testable acceptance criteria. Used as phase 1 of /ship; also usable alone as "/product-brief <idea>" to think a change through before building.
 argument-hint: "<change idea> [change folder]"
 ---
 

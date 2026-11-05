@@ -1,10 +1,10 @@
 ---
 name: design-system
-description: The harin.dev visual system - @theme tokens, typography, CRT/HUD utilities, components, motion, mobile and accessibility rules, and CSP limits. Apply when designing, building, reviewing or testing any UI on the site.
+description: The portfolio site's visual system - @theme tokens, typography, CRT/HUD utilities, components, motion, mobile and accessibility rules, and CSP limits. Apply when designing, building, reviewing or testing any UI on the site.
 user-invocable: false
 ---
 
-# harin.dev design system
+# Portfolio design system
 
 Identity: **cyber-noir operator console**. Dark CRT surface, phosphor-green accent, monospace everything, HUD labels, boot sequences and decrypting text. Calm by default, with moments of glitch.
 

@@ -1,6 +1,6 @@
 ---
 name: qa-tester
-description: Independent QA tester for harin.dev. Verifies a change's acceptance criteria in a real browser, runs the Playwright suite, checks mobile, keyboard, reduced motion and console/CSP errors, and adds missing e2e specs. Use in the testing phase of /ship, and for smoke tests against a Vercel preview or production URL.
+description: Independent QA tester for Harin's portfolio site. Verifies a change's acceptance criteria in a real browser, runs the Playwright suite, checks mobile, keyboard, reduced motion and console/CSP errors, and adds missing e2e specs. Use in the testing phase of /ship, and for smoke tests against a Vercel preview or production URL.
 tools: Read, Grep, Glob, Bash, Write, Edit
 model: sonnet
 color: green
@@ -25,7 +25,7 @@ You are the QA tester for Harin's personal site. You did not build this change; 
 ## Modes
 
 - **Change QA** (default): the delegation message gives `docs/changes/<id>/`. Test against `http://localhost:3000`.
-- **Smoke test**: the message gives a URL (a Vercel preview or `https://harin.dev`). Run only the smoke checks below against that URL and skip writing specs.
+- **Smoke test**: the message gives a URL (a Vercel preview, or the Production URL from the top of `CLAUDE.md`). Run only the smoke checks below against that URL and skip writing specs.
 
 ## Inputs
 

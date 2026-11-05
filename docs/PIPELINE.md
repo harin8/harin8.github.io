@@ -1,6 +1,6 @@
 # Change pipeline
 
-Every change to harin.dev goes through seven phases, from "why are we doing this" to "it's live and verified". You start it with one command and approve it at three gates; Claude runs the rest.
+Every change to the site goes through seven phases, from "why are we doing this" to "it's live and verified". You start it with one command and approve it at three gates; Claude runs the rest.
 
 ```
 /ship add a "now learning" section to the home page
@@ -27,7 +27,7 @@ flowchart LR
   Q -->|bugs| V
   Q --> GC{{gate C}}
   GC --> DP[7 · /deploy<br/>skill, manual]
-  DP --> P([harin.dev])
+  DP --> P([production])
 ```
 
 ## Commands
@@ -99,6 +99,7 @@ Your Everything Claude Code skills (listed in `CLAUDE.md`) still load as before.
 - `brand-voice/SKILL.md`: a starter drawn from your current copy. Make it yours; every content review uses it.
 - `design-system/SKILL.md`: update when `@theme` changes.
 - Agent `model:` fields: `code-reviewer` inherits your session model; the other two use Sonnet to save usage.
+- Production URL: set once at the top of `CLAUDE.md`; `/deploy` reads it from there.
 - Gates and loop limits live in `ship/SKILL.md`.
 - Subagents run in the background by default, and `/ship` waits for each report before moving on. If you'd rather watch them block, set `CLAUDE_CODE_FORK_SUBAGENT=0` in your user settings.
 

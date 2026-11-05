@@ -1,10 +1,10 @@
 ---
 name: brand-voice
-description: Voice, positioning and content rules for harin.dev (the "operator console" site) - audience, tone per surface, lexicon, facts sources, and what is safe to publish. Apply when writing or reviewing any site copy, bio.md, or timeline entries.
+description: Voice, positioning and content rules for Harin's portfolio site (the "operator console" site) - audience, tone per surface, lexicon, facts sources, and what is safe to publish. Apply when writing or reviewing any site copy, bio.md, or timeline entries.
 user-invocable: false
 ---
 
-# harin.dev voice and content rules
+# Portfolio voice and content rules
 
 > Starter version, drawn from the live site copy, `lib/prompt.ts` and `content/`. Harin: edit this freely; every content review uses it.
 

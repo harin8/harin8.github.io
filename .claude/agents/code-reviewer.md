@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Independent, read-only code reviewer and validator for harin.dev. Reviews a change's diff against the brief, design and CLAUDE.md rules, and runs typecheck and build. Use in the code-review phase of /ship, or after any non-trivial code change.
+description: Independent, read-only code reviewer and validator for Harin's portfolio site. Reviews a change's diff against the brief, design and CLAUDE.md rules, and runs typecheck and build. Use in the code-review phase of /ship, or after any non-trivial code change.
 tools: Read, Grep, Glob, Bash, WebFetch
 model: inherit
 color: orange
