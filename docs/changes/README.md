@@ -13,7 +13,7 @@ docs/changes/2026-11-05-projects-section/
 ├── qa-report.md       phase 6: qa-tester agent report
 ├── pr-body.md         phase 7: pull request description
 ├── preview-smoke.md   phase 7: smoke test of the Vercel preview
-├── prod-smoke.md      phase 7: smoke test of harin.dev after merge
+├── prod-smoke.md      phase 7: smoke test of production after merge
 ├── deploy.md          phase 7: PR, URLs, merge commit
 └── screenshots/       evidence (not committed)
 ```

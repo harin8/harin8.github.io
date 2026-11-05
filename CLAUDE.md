@@ -1,6 +1,8 @@
 # Project Instructions
 
-Personal site (`harin.dev`) — Next.js 16 App Router, React 19, TypeScript strict, Tailwind v4, deployed on Vercel. One streaming LLM endpoint at `/api/chat` grounded in `content/bio.md`.
+Personal site — Next.js 16 App Router, React 19, TypeScript strict, Tailwind v4, deployed on Vercel. One streaming LLM endpoint at `/api/chat` grounded in `content/bio.md`.
+
+**Production URL:** https://harin-portfolio-tau.vercel.app (no custom domain yet). This is the single place it's set: `/deploy` and the `qa-tester` agent read it from here, so update this line when a custom domain is attached.
 
 ## Tech Stack
 - Next.js 16 (App Router only) + React 19 + TypeScript 5.7 strict, ES2022

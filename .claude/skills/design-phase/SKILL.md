@@ -1,6 +1,6 @@
 ---
 name: design-phase
-description: Design a change to harin.dev from its approved brief - layout per breakpoint, components, tokens, states, motion, accessibility, and a verbatim copy deck - inside the site's cyber-noir system. Used as phase 2 of /ship; also usable alone as "/design-phase <change folder>".
+description: Design a change to the portfolio site from its approved brief - layout per breakpoint, components, tokens, states, motion, accessibility, and a verbatim copy deck - inside the site's cyber-noir system. Used as phase 2 of /ship; also usable alone as "/design-phase <change folder>".
 argument-hint: "<change folder>"
 ---
 

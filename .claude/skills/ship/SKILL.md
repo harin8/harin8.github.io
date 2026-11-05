@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Run a change to harin.dev through the full pipeline (brief, design, content review, development, code review, testing) up to the deploy gate. Use "/ship <change>" to start, "/ship continue" to resume, "/ship status" to list changes.
+description: Run a change to the portfolio site through the full pipeline (brief, design, content review, development, code review, testing) up to the deploy gate. Use "/ship <change>" to start, "/ship continue" to resume, "/ship status" to list changes.
 argument-hint: "<what you want to change> | continue [id] | status"
 disable-model-invocation: true
 ---

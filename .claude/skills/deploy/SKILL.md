@@ -1,13 +1,13 @@
 ---
 name: deploy
-description: Ship a change that passed /ship - push its branch, open a PR, smoke-test the Vercel preview, merge only after explicit approval, and verify production on harin.dev.
+description: Ship a change that passed /ship - push its branch, open a PR, smoke-test the Vercel preview, merge only after explicit approval, and verify production.
 argument-hint: "[change id]"
 disable-model-invocation: true
 ---
 
 # /deploy
 
-Deployment for harin.dev is git-driven: pushing a branch makes Vercel build a preview, and merging to `main` deploys production. This skill walks that path with checks at every step. Only Harin starts it, and it asks again before the merge.
+Deployment for the site is git-driven: pushing a branch makes Vercel build a preview, and merging to `main` deploys production. This skill walks that path with checks at every step. Only Harin starts it, and it asks again before the merge.
 
 Change: $ARGUMENTS (if empty, use the newest folder in `docs/changes/` whose `status.md` says "ready to deploy").
 
@@ -43,7 +43,7 @@ Show Harin: the PR link, the preview link, the smoke verdict, and any open notes
 
 ## 6. Verify production
 - Wait for the production deployment of the merge commit to finish (Vercel check on `main`, or the Vercel dashboard).
-- Spawn `qa-tester` in smoke-test mode against `https://harin.dev`. Save as `prod-smoke.md`.
+- Spawn `qa-tester` in smoke-test mode against the **Production URL** at the top of `CLAUDE.md`. Save as `prod-smoke.md`.
 - If production is broken, tell Harin immediately and offer the rollback.
 
 ## 7. Record
