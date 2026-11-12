@@ -45,3 +45,8 @@ Results: `npm run typecheck` clean; `npm run test:e2e` 14/14 passed.
 - AC-3 is verified by reading the CSS. Playwright can't emulate a non-zero `env(safe-area-inset-*)`.
 - Home hint contrast is close to the line (4.57) where a MatrixRain glyph passes directly behind the text. It passes, but if the rain gets brighter later, re-check it.
 - Before/after screenshots show Next's dev indicator badge in the bottom-left corner. It's dev-only.
+
+## Code review round 1 (PASS_WITH_NOTES)
+- Nit 2 applied: the AC-7 test now also checks that the `/ open` button's border color changes on focus.
+- Nit 3 applied: a comment in `TimelineScene` explains that duplicate-year hiding relies on `TIMELINE` being chronological.
+- Nit 1 deferred: `@source not "../docs";` in `globals.css`, so example class names in change docs don't ship in the CSS. It's a build-config change outside this brief, so it goes on the follow-up list in `status.md`.

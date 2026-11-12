@@ -197,6 +197,8 @@ export function TimelineScene() {
             ))}
           </div>
           <div className="relative h-5 mt-2 hud-label">
+            {/* Label the first event of each run of equal years. TIMELINE is
+                chronological, so equal years are always adjacent. */}
             {TIMELINE.map((e, i) =>
               i > 0 && TIMELINE[i - 1].year === e.year ? null : (
                 <span

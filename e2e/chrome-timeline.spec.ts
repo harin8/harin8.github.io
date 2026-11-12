@@ -190,6 +190,9 @@ test("AC-7 keyboard reaches every nav item with a visible, unclipped focus", asy
   await page.goto("/timeline");
   const items = page.getByRole("banner").locator("nav a, nav button");
   const count = await items.count();
+  const restBorder = await items
+    .last()
+    .evaluate((el) => getComputedStyle(el).borderColor);
 
   await page.getByRole("banner").locator("a").first().focus();
   for (let i = 0; i < count; i++) {
@@ -203,6 +206,10 @@ test("AC-7 keyboard reaches every nav item with a visible, unclipped focus", asy
     // Links show a ring (box-shadow); the palette button changes its border.
     if ((await focused.evaluate((el) => el.tagName)) === "A") {
       expect(style.shadow).not.toBe("none");
+    } else {
+      await expect
+        .poll(() => focused.evaluate((el) => getComputedStyle(el).borderColor))
+        .not.toBe(restBorder);
     }
     const box = await focused.boundingBox();
     expect(box!.x).toBeGreaterThanOrEqual(0);
