@@ -4,7 +4,7 @@
 - **request:** "fix nav padding, low-contrast labels and timeline scrubber."
 - **branch:** claude/nav-contrast-scrubber-fixes-dzfm
 - **started:** 2026-11-04
-- **current:** phase 6, testing
+- **current:** gate C, ready to deploy
 
 | # | Phase | State | Artifact | Notes |
 |---|---|---|---|---|
@@ -15,8 +15,8 @@
 | B | Gate: design + copy approved | approved 2026-11-12 | | accepted side-effect fixes + nav focus ring |
 | 4 | Development | done | dev-notes.md | typecheck clean, e2e 14/14 |
 | 5 | Code review | done (PASS_WITH_NOTES, round 1) | code-review.md | nits 2-3 applied, nit 1 deferred |
-| 6 | Testing | in progress | qa-report.md | |
-| C | Ready to deploy | pending | | |
+| 6 | Testing | done (PASS_WITH_NOTES, round 1) | qa-report.md | 1 pre-existing minor bug, logged as follow-up |
+| C | Ready to deploy | ready 2026-11-12 | | |
 | 7 | Deploy | pending | deploy.md | |
 
 States: `pending` · `in progress` · `done (<verdict>, round N)` · `approved <date>` · `skipped (<reason>)` · `shipped <date>`
@@ -30,3 +30,11 @@ States: `pending` · `in progress` · `done (<verdict>, round N)` · `approved <
 - 2026-11-12: Gate B approved by Harin, both open questions accepted as recommended
 - 2026-11-12: development done on claude/nav-contrast-scrubber-fixes-dzfm (3 commits). One deviation: BootSequence padding split by side (see dev-notes)
 - 2026-11-12: code review PASS_WITH_NOTES. Follow-up: add `@source not "../docs";` to globals.css so doc examples don't ship as CSS
+- 2026-11-12: QA PASS_WITH_NOTES, AC-1..AC-9 all pass. Probe scripts moved out of the change folder.
+- 2026-11-12: ready to deploy. Run `/deploy 2026-11-04-nav-contrast-scrubber-fixes`.
+
+## Follow-ups (not in this change)
+- Pre-existing: on /timeline at <768px with a fine pointer, TimelineNode text sits ~2px from the left edge (qa-report bug 1).
+- Add `@source not "../docs";` to globals.css so class names in change docs don't ship as CSS (code-review nit 1).
+- Verify AC-3 on a real notched device in landscape after the preview deploys.
+- From the brief: timeline heading size, home hero composition, `scroll · or · navigate` accuracy, green restricted to active elements.
