@@ -13,7 +13,7 @@ export function Nav() {
   const pathname = usePathname();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-3 sm:px-6 py-3 sm:py-4 backdrop-blur-sm bg-[color-mix(in_srgb,var(--color-bg)_70%,transparent)] border-b border-[color-mix(in_srgb,var(--color-haze)_30%,transparent)] safe-top safe-left safe-right">
+    <header className="fixed top-0 left-0 right-0 z-50 safe-x-3 sm:safe-x-6 safe-top-3 sm:safe-top-4 pb-3 sm:pb-4 backdrop-blur-sm bg-[color-mix(in_srgb,var(--color-bg)_70%,transparent)] border-b border-[color-mix(in_srgb,var(--color-haze)_30%,transparent)]">
       <div className="flex items-center justify-between gap-2">
         <Link
           href="/"
@@ -32,13 +32,13 @@ export function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`tap-target inline-flex items-center px-1 group relative font-mono text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors focus-visible:text-accent focus-visible:outline-none ${
+                className={`tap-target inline-flex items-center px-1 group relative font-mono text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase transition-colors focus-visible:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/60 ${
                   active
                     ? "text-accent"
                     : "text-haze hover:text-ink"
                 }`}
               >
-                <span className="hidden sm:inline opacity-50 mr-1">
+                <span className="hidden sm:inline text-haze/90 mr-1">
                   {link.code}
                 </span>
                 {link.label}

@@ -51,7 +51,7 @@ export function BootSequence({ onDone }: Props) {
 
   return (
     <div
-      className={`fixed inset-0 z-40 flex items-end justify-start p-5 sm:p-8 safe-bottom safe-left bg-bg pointer-events-none transition-opacity duration-700 ${
+      className={`fixed inset-0 z-40 flex items-end justify-start pt-5 pr-5 sm:pt-8 sm:pr-8 safe-bottom-5 safe-left-5 sm:safe-bottom-8 sm:safe-left-8 bg-bg pointer-events-none transition-opacity duration-700 ${
         done ? "opacity-0" : "opacity-100"
       }`}
       aria-hidden={done}
