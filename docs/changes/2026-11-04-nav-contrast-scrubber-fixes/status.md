@@ -4,7 +4,7 @@
 - **request:** "fix nav padding, low-contrast labels and timeline scrubber."
 - **branch:** claude/nav-contrast-scrubber-fixes-dzfm
 - **started:** 2026-11-04
-- **current:** phase 7, deploy: merging
+- **current:** shipped 2026-11-12
 
 | # | Phase | State | Artifact | Notes |
 |---|---|---|---|---|
@@ -17,7 +17,7 @@
 | 5 | Code review | done (PASS_WITH_NOTES, round 1) | code-review.md | nits 2-3 applied, nit 1 deferred |
 | 6 | Testing | done (PASS_WITH_NOTES, round 1) | qa-report.md | 1 pre-existing minor bug, logged as follow-up |
 | C | Ready to deploy | ready 2026-11-12 | | |
-| 7 | Deploy | in progress | deploy.md | PR #10 open, preview built; preview behind Vercel SSO |
+| 7 | Deploy | shipped 2026-11-12 | deploy.md | PR #10 → e9be485; preview smoke skipped; prod smoke PASS_WITH_NOTES |
 
 States: `pending` · `in progress` · `done (<verdict>, round N)` · `approved <date>` · `skipped (<reason>)` · `shipped <date>`
 
@@ -33,6 +33,7 @@ States: `pending` · `in progress` · `done (<verdict>, round N)` · `approved <
 - 2026-11-12: QA PASS_WITH_NOTES, AC-1..AC-9 all pass. Probe scripts moved out of the change folder.
 - 2026-11-12: ready to deploy. Run `/deploy 2026-11-04-nav-contrast-scrubber-fixes`.
 - 2026-11-12: preview smoke test skipped (reason: Vercel Deployment Protection; Harin chose to merge without it). Harin approved merge. Follow-ups moved to docs/BACKLOG.md.
+- 2026-11-12: merged PR #10 as e9be485; production deployed; prod smoke PASS_WITH_NOTES (favicon 404, unrelated). Shipped.
 
 ## Follow-ups (not in this change)
 Moved to [docs/BACKLOG.md](../../BACKLOG.md), items 1-10.
