@@ -198,16 +198,43 @@ body {
   min-width: 44px;
 }
 
-/* Safe-area-inset utilities (Tailwind v4 ships none) */
-.safe-top {
+/*
+ * Safe-area-inset utilities (Tailwind v4 ships none).
+ * `safe-left-3` = padding-left: max(inset, spacing 3); `safe-top-[8vh]` takes a length.
+ * Never combine a safe-* utility with a p*-* utility for the same side on one
+ * element: they set the same property and only one wins.
+ */
+@utility safe-top {
   padding-top: env(safe-area-inset-top);
 }
-.safe-bottom {
+@utility safe-bottom {
   padding-bottom: env(safe-area-inset-bottom);
 }
-.safe-left {
+@utility safe-left {
   padding-left: env(safe-area-inset-left);
 }
-.safe-right {
+@utility safe-right {
   padding-right: env(safe-area-inset-right);
+}
+@utility safe-top-* {
+  padding-top: max(env(safe-area-inset-top), --spacing(--value(integer)));
+  padding-top: max(env(safe-area-inset-top), --value([length]));
+}
+@utility safe-bottom-* {
+  padding-bottom: max(env(safe-area-inset-bottom), --spacing(--value(integer)));
+  padding-bottom: max(env(safe-area-inset-bottom), --value([length]));
+}
+@utility safe-left-* {
+  padding-left: max(env(safe-area-inset-left), --spacing(--value(integer)));
+  padding-left: max(env(safe-area-inset-left), --value([length]));
+}
+@utility safe-right-* {
+  padding-right: max(env(safe-area-inset-right), --spacing(--value(integer)));
+  padding-right: max(env(safe-area-inset-right), --value([length]));
+}
+@utility safe-x-* {
+  padding-left: max(env(safe-area-inset-left), --spacing(--value(integer)));
+  padding-left: max(env(safe-area-inset-left), --value([length]));
+  padding-right: max(env(safe-area-inset-right), --spacing(--value(integer)));
+  padding-right: max(env(safe-area-inset-right), --value([length]));
 }

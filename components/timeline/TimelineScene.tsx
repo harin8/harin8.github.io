@@ -164,7 +164,7 @@ export function TimelineScene() {
       {/* HUD: year counter (pin-only) */}
       {!fallback && (
         <div className="absolute top-24 left-6 sm:left-10 z-20 hud-label flex flex-col gap-1 safe-left">
-          <span className="text-haze">› current</span>
+          <span className="text-haze" data-testid="timeline-hud-label">› viewing</span>
           <span className="font-mono text-3xl text-accent tracking-tight">
             {activeYear}
           </span>
@@ -180,16 +180,39 @@ export function TimelineScene() {
               {Math.round(progress * 100).toString().padStart(3, "0")}%
             </span>
           </div>
-          <div className="h-px bg-haze/30 w-full">
+          <div className="relative h-px bg-haze/30 w-full">
             <div
               className="h-full bg-accent transition-[width]"
               style={{ width: `${progress * 100}%` }}
             />
-          </div>
-          <div className="flex items-center justify-between mt-2 hud-label opacity-60">
-            {TIMELINE.map((e, i) => (
-              <span key={i}>{e.year}</span>
+            {/* One tick per event, at the progress where it becomes active */}
+            {TIMELINE.map((_, i) => (
+              <span
+                key={i}
+                data-testid="timeline-tick"
+                aria-hidden
+                className="absolute bottom-0 w-px h-[5px] bg-haze/50"
+                style={{ left: `${(i / TIMELINE.length) * 100}%` }}
+              />
             ))}
+          </div>
+          <div className="relative h-5 mt-2 hud-label">
+            {/* Label the first event of each run of equal years. TIMELINE is
+                chronological, so equal years are always adjacent. */}
+            {TIMELINE.map((e, i) =>
+              i > 0 && TIMELINE[i - 1].year === e.year ? null : (
+                <span
+                  key={i}
+                  data-testid="timeline-year"
+                  className={`absolute top-0 ${
+                    e.year === activeYear ? "text-accent" : "text-haze"
+                  }`}
+                  style={{ left: `${(i / TIMELINE.length) * 100}%` }}
+                >
+                  {e.year}
+                </span>
+              ),
+            )}
           </div>
         </div>
       )}
