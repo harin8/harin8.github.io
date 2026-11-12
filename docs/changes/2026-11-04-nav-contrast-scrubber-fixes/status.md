@@ -32,7 +32,7 @@ States: `pending` · `in progress` · `done (<verdict>, round N)` · `approved <
 - 2026-11-12: code review PASS_WITH_NOTES. Follow-up: add `@source not "../docs";` to globals.css so doc examples don't ship as CSS
 - 2026-11-12: QA PASS_WITH_NOTES, AC-1..AC-9 all pass. Probe scripts moved out of the change folder.
 - 2026-11-12: ready to deploy. Run `/deploy 2026-11-04-nav-contrast-scrubber-fixes`.
+- 2026-11-12: preview smoke test skipped (reason: Vercel Deployment Protection; Harin chose to merge without it). Harin approved merge. Follow-ups moved to docs/BACKLOG.md.
 
 ## Follow-ups (not in this change)
 Moved to [docs/BACKLOG.md](../../BACKLOG.md), items 1-10.
-- 2026-11-12: preview smoke test skipped (reason: Vercel Deployment Protection; Harin chose to merge without it). Harin approved merge. Follow-ups moved to docs/BACKLOG.md.
